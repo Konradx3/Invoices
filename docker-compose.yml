@@ -1,0 +1,37 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/DockerFile
+    ports: 
+      - "8080:80"
+    networks:
+      - internal
+    volumes:
+      - ./www/:/var/www/html/
+      - ./logs/nginx:/var/log/nginx/
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/DockerFile
+    networks:
+      - internal
+    volumes:
+      - ./www/:/var/www/html/
+      - ./logs/php.log:/var/log/fpm-php.www.log
+    depends_on:
+      - mysql
+  mysql:
+     image: mariadb
+     restart: always
+     environment:
+        MARIADB_ROOT_PASSWORD: invoices
+        MARIADB_DATABASE: invoices
+     ports: 
+      - "3306:3306"
+     networks:
+      - internal
+networks:
+  internal:
+    driver: bridge

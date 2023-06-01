@@ -1,0 +1,9 @@
+FROM php:8-fpm-alpine
+RUN docker-php-ext-install opcache
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY ./docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY ./www/ /var/www/html/
+RUN docker-php-ext-install pdo_mysql 
+RUN docker-php-ext-configure pdo_mysql
+RUN docker-php-ext-enable pdo_mysql
+RUN composer install --optimize-autoloader --no-interaction --no-progress
