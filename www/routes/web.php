@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::prefix('/app')->group(function (){
+    Route::get('/', [AppController::class, 'index'])->name('app.index');
+    Route::get('/list', [AppController::class, 'list'])->name('app.list');
+    Route::get('/new', [AppController::class, 'new'])->name('app.new');
+
+    Route::get('/profile', [AppController::class, 'profile'])->name('app.profile');
+
+    Route::get('/contact-form', [AppController::class, 'contactForm'])->name('app.contactForm');
+
+});
