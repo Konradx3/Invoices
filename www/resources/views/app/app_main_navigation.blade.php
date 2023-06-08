@@ -7,19 +7,19 @@
         <ul class="sidebar-nav">
             <li class="sidebar-header">Główne</li>
 
-            <li class="sidebar-item active">
+            <li class="sidebar-item {{ Route::is('app.index') ? 'active' : '' }}">
                 <a class="sidebar-link" href="{{ route('app.index') }}">
                     <i class="align-middle" data-feather="home"></i> <span class="align-middle">Panel użytkownika</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
+            <li class="sidebar-item {{ Route::is('app.list') ? 'active' : '' }}">
                 <a class="sidebar-link" href="{{ route('app.list') }}">
                     <i class="align-middle" data-feather="list"></i> <span class="align-middle">Lista faktur</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
+            <li class="sidebar-item {{ Route::is('app.new') ? 'active' : '' }}">
                 <a class="sidebar-link" href="{{ route('app.new') }}">
                     <i class="align-middle" data-feather="plus"></i> <span class="align-middle">Nowa faktura</span>
                 </a>
@@ -27,7 +27,7 @@
 
             <li class="sidebar-header">Konto</li>
 
-            <li class="sidebar-item">
+            <li class="sidebar-item {{ Route::is('app.profile') ? 'active' : '' }}">
                 <a class="sidebar-link" href="{{ route('app.profile') }}">
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profil firmy</span>
                 </a>
@@ -35,7 +35,7 @@
 
             <li class="sidebar-header">Inne</li>
 
-            <li class="sidebar-item">
+            <li class="sidebar-item {{ Route::is('app.contactForm') ? 'active' : '' }}">
                 <a class="sidebar-link" href="{{ route('app.contactForm') }}">
                     <i class="align-middle" data-feather="message-square"></i> <span class="align-middle">Kontakt</span>
                 </a>
