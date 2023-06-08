@@ -14,17 +14,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invoice', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->timestamps();
             $table->string('invoice_number', 20);
             $table->string('company_name');
-            $table->string('nip');
+            $table->string('nip', 30);
             $table->string('address');
-            $table->string('palce_number');
-            $table->string('zip_code');
+            $table->string('place_number');
+            $table->string('zip_code', 10);
             $table->string('country');
             $table->string('place');
+            $table->string('items');
             $table->string('payment_method');
             $table->enum('status', Invoice::getAvailableStatuses());
         });
