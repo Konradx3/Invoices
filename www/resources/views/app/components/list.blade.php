@@ -20,31 +20,32 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>01/01/2021</td>
-                            <td class="d-none d-xl-table-cell">FA/46/2023</td>
-                            <td class="d-none d-xl-table-cell">Kowalski-Bud</td>
-                            <td><span class="badge bg-success">Zakończona</span></td>
-                            <td class="d-none d-md-table-cell">
-                                <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Dropdown link
-                                    </a>
+                        @foreach($invoices as $invoice)
+                            <tr>
+                                <td>{{ $invoice->created_at }}</td>
+                                <td class="d-none d-xl-table-cell">{{ $invoice->invoice_number }}</td>
+                                <td class="d-none d-xl-table-cell">{{ $invoice->company_name }}</td>
+                                <td><span class="badge bg-success">{{ $invoice->status }}</span></td>
+                                <td class="d-none d-md-table-cell">
+                                    <div class="dropdown">
+                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Dropdown link
+                                        </a>
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </div>
 
 @endsection

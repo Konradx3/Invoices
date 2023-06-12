@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('country');
             $table->string('place');
             $table->string('items');
-            $table->string('payment_method');
+            $table->enum('payment_method', Invoice::getAvailablePaymentMethod());
             $table->enum('status', Invoice::getAvailableStatuses());
         });
     }

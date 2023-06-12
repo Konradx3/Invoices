@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Invoice;
 
 class AppController extends Controller
 {
@@ -14,7 +14,9 @@ class AppController extends Controller
 
     public function list()
     {
-        return view('app.components.list');
+        $invoices = Invoice::getInvoiceData();
+
+        return view('app.components.list', ['invoices' => $invoices]);
     }
 
     public function new()
