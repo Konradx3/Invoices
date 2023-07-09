@@ -16,13 +16,11 @@ return new class extends Migration
         Schema::create('items_for_invoice', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('product_name');
-            $table->string('PKWiU')->nullable();
-            $table->float('quantity');
-            $table->string('unit_measure');
             $table->decimal('unit_net', 10, 2);
-            $table->decimal('sum_net', 10, 2);
             $table->float('vat');
             $table->decimal('unit_gross', 10, 2);
+            $table->float('quantity');
+            $table->decimal('sum_net', 10, 2);
             $table->decimal('sum_gross', 10, 2);
             $table->timestamps();
         });

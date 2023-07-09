@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use Illuminate\Http\Request;
+
 
 class AppController extends Controller
 {
@@ -22,6 +24,11 @@ class AppController extends Controller
     public function new()
     {
         return view('app.components.new_invoice');
+    }
+
+    public function test(Request $request)
+    {
+        dd($request->all());
     }
 
     public function profile()

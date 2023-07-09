@@ -27,6 +27,7 @@ Route::prefix('/app')->group(function (){
     Route::get('/', [AppController::class, 'index'])->name('app.index');
     Route::get('/list', [AppController::class, 'list'])->name('app.list');
     Route::get('/new', [AppController::class, 'new'])->name('app.new');
+    Route::post('/test', [AppController::class, 'test'])->name('app.test');
 
     Route::get('/profile', [AppController::class, 'profile'])->name('app.profile');
 

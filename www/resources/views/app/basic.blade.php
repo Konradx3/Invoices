@@ -10,6 +10,7 @@
 
     <title>{{ config('app.name', 'Fakturkowo - Panel użytkownika') }}</title>
 
+    <link href="../../css/invoice.css" rel="stylesheet">
     <link href="../../css/app.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -28,6 +29,7 @@
         </main>
     </div>
 </div>
+<script src="../../js/invoice.js"></script>
 <script src="../../js/app.js"></script>
 
 <script>
