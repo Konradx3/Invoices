@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAppRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 
@@ -26,9 +27,9 @@ class AppController extends Controller
         return view('app.components.new_invoice');
     }
 
-    public function test(Request $request)
+    public function store(StoreAppRequest $request)
     {
-        dd($request->all());
+        return $request->validated();
     }
 
     public function profile()

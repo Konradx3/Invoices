@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('place_number')->nullable();
             $table->string('zip_code', 10)->nullable();
             $table->string('place')->nullable();
-            $table->string('items');
             $table->enum('payment_method', Invoice::getAvailablePaymentMethod());
             $table->enum('status', Invoice::getAvailableStatuses());
         });

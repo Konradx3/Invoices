@@ -15,13 +15,14 @@ class Invoice extends Model
         [
             'Paid' => 'paid',
             'In-progress' => 'in-progress',
-            'Cancelled' => 'cancelled'
+            'Cancelled' => 'cancelled',
         ];
 
     protected const PAYMENT_METHOD =
         [
             'Cash' => 'cash',
-            'Transfer' => 'transfer'
+            'Transfer7' => 'transfer7',
+            'Transfer14' => 'transfer14',
         ];
 
     public static function getAvailableStatuses(bool $keys = false)

@@ -1,238 +1,172 @@
-/* Shivving (IE8 is not supported, but at least it won't look as awful)
-/* ========================================================================== */
+// Pobierz referencję do przycisku "Dodaj kolejny"
+const addButton = document.querySelector('.add');
 
-(function (document) {
-    var
-        head = document.head = document.getElementsByTagName('head')[0] || document.documentElement,
-        elements = 'article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output picture progress section summary time video x'.split(' '),
-        elementsLength = elements.length,
-        elementsIndex = 0,
-        element;
+// Dodaj nasłuchiwanie na kliknięcie przycisku "Dodaj kolejny"
+addButton.addEventListener('click', addRow);
 
-    while (elementsIndex < elementsLength) {
-        element = document.createElement(elements[++elementsIndex]);
-    }
+// Funkcja obsługująca dodanie nowego wiersza
+function addRow() {
+    // Pobierz referencję do tabeli z produktem/usługą
+    const inventoryTable = document.querySelector('.inventory tbody');
 
-    element.innerHTML = 'x<style>' +
-        'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
-        'audio[controls],canvas,video{display:inline-block}' +
-        '[hidden],audio{display:none}' +
-        'mark{background:#FF0;color:#000}' +
-        '</style>';
+    // Utwórz nowy wiersz
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+    <td><a class="cut">Usuń</a><input type="text" name="productName[]" placeholder="Konsultacja"></td>
+    <td><input type="text" name="unitNetPrice[]" placeholder="100.00"><span data-prefix> PLN</span></td>
+    <td><input type="number" name="vat[]" placeholder="23"><span> %</span></td>
+    <td><span class="unitGrossPrice"></span><span data-prefix> PLN</span></td>
+    <td><input type="number" name="quantity[]" placeholder="2"></td>
+    <td><span class="rowNetPrice"></span><span data-prefix> PLN</span></td>
+    <td><span class="rowGrossPrice"></span><span data-prefix> PLN</span></td>
+  `;
 
-    return head.insertBefore(element.lastChild, head.firstChild);
-})(document);
+    // Dodaj nowy wiersz do tabeli
+    inventoryTable.appendChild(newRow);
 
-/* Prototyping
-/* ========================================================================== */
+    // Pobierz referencje do nowych pól w dodanym wierszu
+    const unitNetPriceInput = newRow.querySelector('input[name="unitNetPrice[]"]');
+    const vatInput = newRow.querySelector('input[name="vat[]"]');
+    const unitGrossPriceSpan = newRow.querySelector('.unitGrossPrice');
+    const rowNetPriceSpan = newRow.querySelector('.rowNetPrice');
+    const rowGrossPriceSpan = newRow.querySelector('.rowGrossPrice');
+    const quantityInput = newRow.querySelector('input[name="quantity[]"]');
 
-(function (window, ElementPrototype, ArrayPrototype, polyfill) {
-    function NodeList() { [polyfill] }
-    NodeList.prototype.length = ArrayPrototype.length;
+    // Dodaj nasłuchiwanie na zmianę wartości w nowych polach
+    unitNetPriceInput.addEventListener('input', updateRowPrices);
+    vatInput.addEventListener('input', updateRowPrices);
+    quantityInput.addEventListener('input', updateRowPrices);
 
-    ElementPrototype.matchesSelector = ElementPrototype.matchesSelector ||
-        ElementPrototype.mozMatchesSelector ||
-        ElementPrototype.msMatchesSelector ||
-        ElementPrototype.oMatchesSelector ||
-        ElementPrototype.webkitMatchesSelector ||
-        function matchesSelector(selector) {
-            return ArrayPrototype.indexOf.call(this.parentNode.querySelectorAll(selector), this) > -1;
-        };
+    // Aktualizuj wartości dla nowo dodanego wiersza
+    updateRowPrices.call(unitNetPriceInput);
 
-    ElementPrototype.ancestorQuerySelectorAll = ElementPrototype.ancestorQuerySelectorAll ||
-        ElementPrototype.mozAncestorQuerySelectorAll ||
-        ElementPrototype.msAncestorQuerySelectorAll ||
-        ElementPrototype.oAncestorQuerySelectorAll ||
-        ElementPrototype.webkitAncestorQuerySelectorAll ||
-        function ancestorQuerySelectorAll(selector) {
-            for (var cite = this, newNodeList = new NodeList; cite = cite.parentElement;) {
-                if (cite.matchesSelector(selector)) ArrayPrototype.push.call(newNodeList, cite);
-            }
-
-            return newNodeList;
-        };
-
-    ElementPrototype.ancestorQuerySelector = ElementPrototype.ancestorQuerySelector ||
-        ElementPrototype.mozAncestorQuerySelector ||
-        ElementPrototype.msAncestorQuerySelector ||
-        ElementPrototype.oAncestorQuerySelector ||
-        ElementPrototype.webkitAncestorQuerySelector ||
-        function ancestorQuerySelector(selector) {
-            return this.ancestorQuerySelectorAll(selector)[0] || null;
-        };
-})(this, Element.prototype, Array.prototype);
-
-/* Helper Functions
-/* ========================================================================== */
-
-function generateTableRow() {
-    var emptyColumn = document.createElement('tr');
-
-    emptyColumn.innerHTML = '<td><a class="cut">-</a><span contenteditable></span></td>' +
-        '<td><span contenteditable></span></td>' +
-        '<td><span data-prefix>$</span><span contenteditable>0.00</span></td>' +
-        '<td><span contenteditable>0</span></td>' +
-        '<td><span data-prefix>$</span><span>0.00</span></td>';
-
-    return emptyColumn;
+    // Aktualizuj wartości dla wszystkich wierszy
+    updateAllRows();
 }
 
-function parseFloatHTML(element) {
-    return parseFloat(element.innerHTML.replace(/[^\d\.\-]+/g, '')) || 0;
+// Dodaj nasłuchiwanie na kliknięcie przycisku "Usuń"
+const inventoryTableCut = document.querySelector('.inventory tbody');
+inventoryTableCut.addEventListener('click', (event) => {
+    if (event.target.classList.contains('cut')) {
+        const row = event.target.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+        updateBalance(); // Aktualizuj wartości w tabeli balance po usunięciu wiersza
+    }
+});
+
+
+// Funkcja aktualizująca wartość brutto dla danego wiersza
+function updateRowPrices() {
+    // Pobierz referencje do pól w danym wierszu
+    const row = this.parentNode.parentNode;
+    const unitNetPriceInput = row.querySelector('input[name="unitNetPrice[]"]');
+    const vatInput = row.querySelector('input[name="vat[]"]');
+    const unitGrossPriceSpan = row.querySelector('.unitGrossPrice');
+    const rowNetPriceSpan = row.querySelector('.rowNetPrice');
+    const rowGrossPriceSpan = row.querySelector('.rowGrossPrice');
+    const quantityInput = row.querySelector('input[name="quantity[]"]');
+
+    // Pobierz wartości netto, VAT i ilości z pól formularza w danym wierszu
+    const unitNetPrice = parseFloat(unitNetPriceInput.value);
+    const vat = parseFloat(vatInput.value);
+    const quantity = parseFloat(quantityInput.value);
+
+    // Oblicz wartość brutto dla danego wiersza
+    const unitGrossPrice = unitNetPrice * (1 + vat / 100);
+    const rowNetPrice = unitNetPrice * quantity;
+    const rowGrossPrice = unitGrossPrice * quantity;
+
+    // Uaktualnij tekst w odpowiednich elementach HTML
+    unitGrossPriceSpan.textContent = unitGrossPrice.toFixed(2);
+    rowNetPriceSpan.textContent = rowNetPrice.toFixed(2);
+    rowGrossPriceSpan.textContent = rowGrossPrice.toFixed(2);
+
+    // Aktualizuj wartości dla wszystkich wierszy
+    updateAllRows();
 }
 
-function parsePrice(number) {
-    return number.toFixed(2).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1,');
+// Funkcja aktualizująca wartości dla wszystkich wierszy
+function updateAllRows() {
+    // Pobierz wszystkie wiersze z tabeli
+    const rows = document.querySelectorAll('.inventory tbody tr');
+
+    // Iteruj przez każdy wiersz i aktualizuj wartości
+    rows.forEach((row) => {
+        const unitNetPrice = parseFloat(row.querySelector('input[name="unitNetPrice[]"]').value);
+        const vat = parseFloat(row.querySelector('input[name="vat[]"]').value);
+        const quantity = parseFloat(row.querySelector('input[name="quantity[]"]').value);
+
+        const unitGrossPrice = unitNetPrice * (1 + vat / 100);
+        const rowNetPrice = unitNetPrice * quantity;
+        const rowGrossPrice = unitGrossPrice * quantity;
+
+        row.querySelector('.unitGrossPrice').textContent = unitGrossPrice.toFixed(2);
+        row.querySelector('.rowNetPrice').textContent = rowNetPrice.toFixed(2);
+        row.querySelector('.rowGrossPrice').textContent = rowGrossPrice.toFixed(2);
+    });
 }
 
-/* Update Number
-/* ========================================================================== */
+// Pobierz referencję do pierwszego wiersza
+const firstRow = document.querySelector('.inventory tbody tr');
 
-function updateNumber(e) {
-    var
-        activeElement = document.activeElement,
-        value = parseFloat(activeElement.innerHTML),
-        wasPrice = activeElement.innerHTML == parsePrice(parseFloatHTML(activeElement));
+// Pobierz referencje do pól w pierwszym wierszu
+const firstUnitNetPriceInput = firstRow.querySelector('input[name="unitNetPrice[]"]');
+const firstVatInput = firstRow.querySelector('input[name="vat[]"]');
+const firstQuantityInput = firstRow.querySelector('input[name="quantity[]"]');
 
-    if (!isNaN(value) && (e.keyCode == 38 || e.keyCode == 40 || e.wheelDeltaY)) {
-        e.preventDefault();
+// Dodaj nasłuchiwanie na zmianę wartości w polach pierwszego wiersza
+firstUnitNetPriceInput.addEventListener('input', updateRowPrices);
+firstVatInput.addEventListener('input', updateRowPrices);
+firstQuantityInput.addEventListener('input', updateRowPrices);
 
-        value += e.keyCode == 38 ? 1 : e.keyCode == 40 ? -1 : Math.round(e.wheelDelta * 0.025);
-        value = Math.max(value, 0);
+// Aktualizuj wartości dla pierwszego wiersza
+updateRowPrices.call(firstUnitNetPriceInput);
 
-        activeElement.innerHTML = wasPrice ? parsePrice(value) : value;
-    }
 
-    updateInvoice();
+
+// Tabela balance
+
+
+// Funkcja aktualizująca łączną sumę, łączny VAT i kwotę do zapłaty
+function updateBalance() {
+    // Pobierz wartość zaliczki wprowadzoną przez klienta
+    const paymentInput = document.getElementById('paymentInput');
+    const paymentAmount = parseFloat(paymentInput.value) || 0;
+
+    // Pobierz wszystkie wiersze z tabeli
+    const rows = document.querySelectorAll('.inventory tbody tr');
+
+    let totalGross = 0; // łączna suma brutto
+    let totalVat = 0; // łączny VAT
+
+    // Iteruj przez każdy wiersz i dodaj sumy brutto i różnice pomiędzy sumą brutto a sumą netto do łącznych wartości
+    rows.forEach((row) => {
+        const rowGrossPrice = parseFloat(row.querySelector('.rowGrossPrice').textContent);
+        const rowNetPrice = parseFloat(row.querySelector('.rowNetPrice').textContent);
+
+        totalGross += rowGrossPrice;
+        totalVat += rowGrossPrice - rowNetPrice;
+    });
+
+    // Oblicz kwotę do zapłaty
+    const amountDue = totalGross - paymentAmount;
+
+    // Zaktualizuj wartości w tabeli balance
+    const totalGrossSpan = document.getElementById('totalGrossSpan');
+    const totalVatSpan = document.getElementById('totalVatSpan');
+    const amountDueSpan = document.getElementById('amountDueSpan');
+
+    totalGrossSpan.textContent = totalGross.toFixed(2);
+    totalVatSpan.textContent = totalVat.toFixed(2);
+    amountDueSpan.textContent = amountDue.toFixed(2);
 }
 
-/* Update Invoice
-/* ========================================================================== */
+// Dodaj nasłuchiwanie na zmiany wartości brutto w wierszach oraz zmiany wartości zaliczki
+const inventoryTable = document.querySelector('.inventory tbody');
+inventoryTable.addEventListener('input', updateBalance);
 
-function updateInvoice() {
-    var total = 0;
-    var cells, price, total, a, i;
+const paymentInput = document.getElementById('paymentInput');
+paymentInput.addEventListener('input', updateBalance);
 
-    // update inventory cells
-    // ======================
-
-    for (var a = document.querySelectorAll('table.inventory tbody tr'), i = 0; a[i]; ++i) {
-        // get inventory row cells
-        cells = a[i].querySelectorAll('span:last-child');
-
-        // set price as cell[2] * cell[3]
-        price = parseFloatHTML(cells[2]) * parseFloatHTML(cells[3]);
-
-        // add price to total
-        total += price;
-
-        // set row total
-        cells[4].innerHTML = price;
-    }
-
-    // update balance cells
-    // ====================
-
-    // get balance cells
-    cells = document.querySelectorAll('table.balance td:last-child span:last-child');
-
-    // set total
-    cells[0].innerHTML = total;
-
-    // set balance and meta balance
-    cells[2].innerHTML = document.querySelector('table.meta tr:last-child td:last-child span:last-child').innerHTML = parsePrice(total - parseFloatHTML(cells[1]));
-
-    // update prefix formatting
-    // ========================
-
-    var prefix = document.querySelector('#prefix').innerHTML;
-    for (a = document.querySelectorAll('[data-prefix]'), i = 0; a[i]; ++i) a[i].innerHTML = prefix;
-
-    // update price formatting
-    // =======================
-
-    for (a = document.querySelectorAll('span[data-prefix] + span'), i = 0; a[i]; ++i) if (document.activeElement != a[i]) a[i].innerHTML = parsePrice(parseFloatHTML(a[i]));
-}
-
-/* On Content Load
-/* ========================================================================== */
-
-function onContentLoad() {
-    updateInvoice();
-
-    var
-        input = document.querySelector('input'),
-        image = document.querySelector('img');
-
-    function onClick(e) {
-        var element = e.target.querySelector('[contenteditable]'), row;
-
-        element && e.target != document.documentElement && e.target != document.body && element.focus();
-
-        if (e.target.matchesSelector('.add')) {
-            document.querySelector('table.inventory tbody').appendChild(generateTableRow());
-        }
-        else if (e.target.className == 'cut') {
-            row = e.target.ancestorQuerySelector('tr');
-
-            row.parentNode.removeChild(row);
-        }
-
-        updateInvoice();
-    }
-
-    function onEnterCancel(e) {
-        e.preventDefault();
-
-        image.classList.add('hover');
-    }
-
-    function onLeaveCancel(e) {
-        e.preventDefault();
-
-        image.classList.remove('hover');
-    }
-
-    function onFileInput(e) {
-        image.classList.remove('hover');
-
-        var
-            reader = new FileReader(),
-            files = e.dataTransfer ? e.dataTransfer.files : e.target.files,
-            i = 0;
-
-        reader.onload = onFileLoad;
-
-        while (files[i]) reader.readAsDataURL(files[i++]);
-    }
-
-    function onFileLoad(e) {
-        var data = e.target.result;
-
-        image.src = data;
-    }
-
-    if (window.addEventListener) {
-        document.addEventListener('click', onClick);
-
-        document.addEventListener('mousewheel', updateNumber);
-        document.addEventListener('keydown', updateNumber);
-
-        document.addEventListener('keydown', updateInvoice);
-        document.addEventListener('keyup', updateInvoice);
-
-        input.addEventListener('focus', onEnterCancel);
-        input.addEventListener('mouseover', onEnterCancel);
-        input.addEventListener('dragover', onEnterCancel);
-        input.addEventListener('dragenter', onEnterCancel);
-
-        input.addEventListener('blur', onLeaveCancel);
-        input.addEventListener('dragleave', onLeaveCancel);
-        input.addEventListener('mouseout', onLeaveCancel);
-
-        input.addEventListener('drop', onFileInput);
-        input.addEventListener('change', onFileInput);
-    }
-}
-
-window.addEventListener && document.addEventListener('DOMContentLoaded', onContentLoad);
+// Wywołaj funkcję updateBalance po załadowaniu strony
+updateBalance();

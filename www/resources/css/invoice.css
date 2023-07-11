@@ -1,12 +1,4 @@
 
-*[contenteditable] { border-radius: 0.25em; min-width: 1em; outline: 0; }
-
-*[contenteditable] { cursor: pointer; }
-
-*[contenteditable]:hover, *[contenteditable]:focus, td:hover *[contenteditable], td:focus *[contenteditable], img.hover { background: #DEF; box-shadow: 0 0 1em 0.5em #DEF; }
-
-span[contenteditable] { display: inline-block; }
-
 /* heading */
 
 h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
@@ -39,32 +31,41 @@ article, article address, table.meta, table.inventory { margin: 0 0 3em; }
 article:after { clear: both; content: ""; display: table; }
 article h1 { clip: rect(0 0 0 0); position: absolute; }
 
-article address { float: left; font-size: 125%; font-weight: bold; }
-
 /* table meta & balance */
 
 table.meta, table.balance { float: right; width: 36%; }
+table.address { float: left; width: 40%; }
 table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+
+/* table address */
+
+table.address { margin-bottom: 30px;}
+table.address input { width: 80%; }
 
 /* table meta */
 
+table.meta input { width: 75%; }
 table.meta th { width: 40%; }
 table.meta td { width: 60%; }
 
 /* table items */
 
-table.inventory { clear: both; width: 100%; }
+table.inventory { clear: both; width: auto; }
 table.inventory th { font-weight: bold; text-align: center; }
 
-table.inventory td:nth-child(1) { width: 26%; }
-table.inventory td:nth-child(2) { width: 38%; }
-table.inventory td:nth-child(3) { text-align: right; width: 12%; }
-table.inventory td:nth-child(4) { text-align: right; width: 12%; }
-table.inventory td:nth-child(5) { text-align: right; width: 12%; }
+table.inventory input { width: 75%; }
+table.inventory td:nth-child(1) { width: 40%; }
+table.inventory td:nth-child(2) { width: 10%; }
+table.inventory td:nth-child(3) { text-align: right; width: 10%; }
+table.inventory td:nth-child(4) { text-align: right; width: 10%; }
+table.inventory td:nth-child(5) { text-align: right; width: 10%; }
+table.inventory td:nth-child(6) { text-align: right; width: 10%; }
+table.inventory td:nth-child(7) { text-align: right; width: 10%; }
 
 /* table balance */
-
-table.balance th, table.balance td { width: 50%; }
+table.balance input { width: 75%; }
+table.balance th { width: 40%; }
+table.balance td { width: 60%; }
 table.balance td { text-align: right; }
 
 /* aside */
@@ -95,7 +96,7 @@ table.balance td { text-align: right; }
     padding: 0.25em 0.5em;
     float: left;
     text-align: center;
-    width: 0.6em;
+    /*width: 0.6em;*/
 }
 
 .add, .cut
@@ -130,3 +131,5 @@ tr:hover .cut { opacity: 1; }
 }
 
 @page { margin: 0; }
+
+

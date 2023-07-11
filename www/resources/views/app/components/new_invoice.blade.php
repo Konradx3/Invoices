@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <form method="POST" action="{{route('app.test')}}">
+    <form method="POST" action="{{route('app.store')}}">
         @csrf
         <header>
             <h1>Faktura</h1>
@@ -88,7 +88,7 @@
                 </tr>
                 <tr>
                     <th><label for="paid">Zapłacone</label></th>
-                    <td><input type="text" name="paid" id="paymentInput" placeholder="00.00"><span data-prefix> PLN</span></td>
+                    <td><input type="text" name="paid" id="paymentInput" value="0" placeholder="00.00"><span data-prefix> PLN</span></td>
                 </tr>
                 <tr>
                     <th><span >Do zapłaty</span></th>

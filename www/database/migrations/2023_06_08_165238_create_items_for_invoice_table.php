@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('items_for_invoice', function (Blueprint $table) {
             $table->id()->autoIncrement();
+            $table->unsignedBigInteger('invoice_id');
             $table->string('product_name');
             $table->decimal('unit_net', 10, 2);
             $table->float('vat');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->decimal('sum_net', 10, 2);
             $table->decimal('sum_gross', 10, 2);
             $table->timestamps();
+            $table->foreign('invoice_id')->references('id')->on('invoices');
         });
     }
 
