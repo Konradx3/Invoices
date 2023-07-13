@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAppRequest;
 use App\Models\Invoice;
-use Illuminate\Http\Request;
 
 
 class AppController extends Controller
