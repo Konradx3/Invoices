@@ -2,6 +2,17 @@
 
 @section('content')
 <div class="container">
+
+    @if(session('successStore'))
+        <div class="alert alert-success">
+            {{ session('successStore') }}
+        </div>
+    @elseif(session('errorStore'))
+        <div class="alert alert-danger">
+            {{ session('errorStore') }}
+        </div>
+    @endif
+
     <form method="POST" action="{{route('app.store')}}">
         @csrf
         <header>
@@ -101,26 +112,26 @@
                 <tr>
                     <td>
                         <a class="cut">Usuń</a>
-                        <input class="has-validation @error('productName') is-invalid @enderror" type="text" name="productName[]" placeholder="Konsultacja" required>
+                        <input class="has-validation @error('productName') is-invalid @enderror" type="text" name="item[productName][]" placeholder="Konsultacja" required>
                         @error('productName')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </td>
                     <td>
-                        <input class="has-validation @error('unitNetPrice') is-invalid @enderror" type="text" name="unitNetPrice[]" placeholder="100.00" required><span data-prefix> PLN</span>
+                        <input class="has-validation @error('unitNetPrice') is-invalid @enderror" type="text" name="item[unitNetPrice][]" placeholder="100.00" required><span data-prefix> PLN</span>
                         @error('unitNetPrice')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </td>
                     <td>
-                        <input class="has-validation @error('vat') is-invalid @enderror" type="number" name="vat[]" placeholder="23" required><span> %</span>
+                        <input class="has-validation @error('vat') is-invalid @enderror" type="number" step="0.1" name="item[vat][]" placeholder="23" required><span> %</span>
                         @error('vat')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </td>
                     <td><span class="unitGrossPrice"></span><span data-prefix> PLN</span></td>
                     <td>
-                        <input class="has-validation @error('quantity') is-invalid @enderror" type="number" name="quantity[]" placeholder="2" required>
+                        <input class="has-validation @error('quantity') is-invalid @enderror" type="number" step="0.1" name="item[quantity][]" placeholder="2" required>
                         @error('quantity')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

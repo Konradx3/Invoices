@@ -28,10 +28,10 @@ class StoreAppRequest extends FormRequest
                 Rule::in(Invoice::getAvailablePaymentMethod()),
             ],
             'paid' => 'numeric|min:0',
-            'productName.*' => 'required|string',
-            'unitNetPrice.*' => 'required|numeric|min:0.01|regex:/^\d+(\.\d{1,2})?$/',
-            'vat.*' => 'required|regex:/^\d+(\.\d{1})?$/|regex:/^\d+$/',
-            'quantity.*' => 'required|regex:/^\d+(\.\d{1})?$/|regex:/^\d+$/',
+            'item.productName.*' => 'required|string',
+            'item.unitNetPrice.*' => 'required|numeric|min:0.01|regex:/^\d+(\.\d{1,2})?$/',
+            'item.vat.*' => 'required|numeric',
+            'item.quantity.*' => 'required|numeric',
         ];
     }
 
@@ -68,9 +68,9 @@ class StoreAppRequest extends FormRequest
             'unitNetPrice.*.min' => 'To pole musi być większe lub równe :min.',
             'unitNetPrice.*.regex' => 'Nieprawidłowy format ceny jednostkowej.',
             'vat.*.required' => 'To pole jest wymagane.',
-            'vat.*.regex' => 'Nieprawidłowy format podatku VAT.',
+            'vat.*.numeric' => 'Nieprawidłowy format podatku VAT.',
             'quantity.*.required' => 'To pole jest wymagane.',
-            'quantity.*.regex' => 'Nieprawidłowy format ilości.',
+            'quantity.*.numeric' => 'Nieprawidłowy format ilości.',
         ];
     }
 }

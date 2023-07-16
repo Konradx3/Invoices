@@ -12,11 +12,11 @@ function addRow() {
     // Utwórz nowy wiersz
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-    <td><a class="cut">Usuń</a><input type="text" name="productName[]" placeholder="Konsultacja"></td>
-    <td><input type="text" name="unitNetPrice[]" placeholder="100.00"><span data-prefix> PLN</span></td>
-    <td><input type="number" name="vat[]" placeholder="23"><span> %</span></td>
+    <td><a class="cut">Usuń</a><input type="text" name="item[productName][]" placeholder="Konsultacja"></td>
+    <td><input type="text" name="item[unitNetPrice][]" placeholder="100.00"><span data-prefix> PLN</span></td>
+    <td><input type="number" name="item[vat][]" step="0.1" placeholder="23"><span> %</span></td>
     <td><span class="unitGrossPrice"></span><span data-prefix> PLN</span></td>
-    <td><input type="number" name="quantity[]" placeholder="2"></td>
+    <td><input type="number" name="item[quantity][]" step="0.1" placeholder="2"></td>
     <td><span class="rowNetPrice"></span><span data-prefix> PLN</span></td>
     <td><span class="rowGrossPrice"></span><span data-prefix> PLN</span></td>
   `;
@@ -25,12 +25,12 @@ function addRow() {
     inventoryTable.appendChild(newRow);
 
     // Pobierz referencje do nowych pól w dodanym wierszu
-    const unitNetPriceInput = newRow.querySelector('input[name="unitNetPrice[]"]');
-    const vatInput = newRow.querySelector('input[name="vat[]"]');
+    const unitNetPriceInput = newRow.querySelector('input[name="item[unitNetPrice][]"]');
+    const vatInput = newRow.querySelector('input[name="item[vat][]"]');
     const unitGrossPriceSpan = newRow.querySelector('.unitGrossPrice');
     const rowNetPriceSpan = newRow.querySelector('.rowNetPrice');
     const rowGrossPriceSpan = newRow.querySelector('.rowGrossPrice');
-    const quantityInput = newRow.querySelector('input[name="quantity[]"]');
+    const quantityInput = newRow.querySelector('input[name="item[quantity][]"]');
 
     // Dodaj nasłuchiwanie na zmianę wartości w nowych polach
     unitNetPriceInput.addEventListener('input', updateRowPrices);
@@ -59,12 +59,12 @@ inventoryTableCut.addEventListener('click', (event) => {
 function updateRowPrices() {
     // Pobierz referencje do pól w danym wierszu
     const row = this.parentNode.parentNode;
-    const unitNetPriceInput = row.querySelector('input[name="unitNetPrice[]"]');
-    const vatInput = row.querySelector('input[name="vat[]"]');
+    const unitNetPriceInput = row.querySelector('input[name="item[unitNetPrice][]"]');
+    const vatInput = row.querySelector('input[name="item[vat][]"]');
     const unitGrossPriceSpan = row.querySelector('.unitGrossPrice');
     const rowNetPriceSpan = row.querySelector('.rowNetPrice');
     const rowGrossPriceSpan = row.querySelector('.rowGrossPrice');
-    const quantityInput = row.querySelector('input[name="quantity[]"]');
+    const quantityInput = row.querySelector('input[name="item[quantity][]"]');
 
     // Pobierz wartości netto, VAT i ilości z pól formularza w danym wierszu
     const unitNetPrice = parseFloat(unitNetPriceInput.value);
@@ -92,9 +92,9 @@ function updateAllRows() {
 
     // Iteruj przez każdy wiersz i aktualizuj wartości
     rows.forEach((row) => {
-        const unitNetPrice = parseFloat(row.querySelector('input[name="unitNetPrice[]"]').value);
-        const vat = parseFloat(row.querySelector('input[name="vat[]"]').value);
-        const quantity = parseFloat(row.querySelector('input[name="quantity[]"]').value);
+        const unitNetPrice = parseFloat(row.querySelector('input[name="item[unitNetPrice][]"]').value);
+        const vat = parseFloat(row.querySelector('input[name="item[vat][]"]').value);
+        const quantity = parseFloat(row.querySelector('input[name="item[quantity][]"]').value);
 
         const unitGrossPrice = unitNetPrice * (1 + vat / 100);
         const rowNetPrice = unitNetPrice * quantity;
@@ -110,9 +110,9 @@ function updateAllRows() {
 const firstRow = document.querySelector('.inventory tbody tr');
 
 // Pobierz referencje do pól w pierwszym wierszu
-const firstUnitNetPriceInput = firstRow.querySelector('input[name="unitNetPrice[]"]');
-const firstVatInput = firstRow.querySelector('input[name="vat[]"]');
-const firstQuantityInput = firstRow.querySelector('input[name="quantity[]"]');
+const firstUnitNetPriceInput = firstRow.querySelector('input[name="item[unitNetPrice][]"]');
+const firstVatInput = firstRow.querySelector('input[name="item[vat][]"]');
+const firstQuantityInput = firstRow.querySelector('input[name="item[quantity][]"]');
 
 // Dodaj nasłuchiwanie na zmianę wartości w polach pierwszego wiersza
 firstUnitNetPriceInput.addEventListener('input', updateRowPrices);

@@ -10,6 +10,12 @@ class Invoice extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'invoices';
 
     protected const AVAILABLE_STATUSES =
         [

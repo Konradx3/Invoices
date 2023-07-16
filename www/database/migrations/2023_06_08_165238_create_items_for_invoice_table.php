@@ -21,8 +21,8 @@ return new class extends Migration
             $table->float('vat');
             $table->decimal('unit_gross', 10, 2);
             $table->float('quantity');
-            $table->decimal('sum_net', 10, 2);
-            $table->decimal('sum_gross', 10, 2);
+            $table->decimal('net_amount', 10, 2);
+            $table->decimal('gross_amount', 10, 2);
             $table->timestamps();
             $table->foreign('invoice_id')->references('id')->on('invoices');
         });
