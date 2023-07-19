@@ -14,7 +14,7 @@
                                         <h5 class="card-title">Ilość faktur w miesiącu</h5>
                                     </div>
                                 </div>
-                                <h2 class="mt-1 mb-3">2.382</h2>
+                                <h2 class="mt-1 mb-3">{{ $count }}</h2>
                             </div>
                         </div>
 
@@ -25,7 +25,7 @@
                                         <h5 class="card-title">Suma NETTO w miesiącu</h5>
                                     </div>
                                 </div>
-                                <h2 class="mt-1 mb-3">14.212 zł</h2>
+                                <h2 class="mt-1 mb-3">{{ $sumNet }} zł</h2>
                             </div>
                         </div>
                     </div>
@@ -37,19 +37,18 @@
                                         <h5 class="card-title">Nie opłacone faktury</h5>
                                     </div>
                                 </div>
-                                <h2 class="mt-1 mb-3">6</h2>
+                                <h2 class="mt-1 mb-3">{{ $invoicesInProgress }}</h2>
 
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="row">
                                     <div class="col mt-0">
                                         <h5 class="card-title">Suma BRUTTO w miesiącu</h5>
                                     </div>
                                 </div>
-                                <h2 class="mt-1 mb-3">21.300 zł</h2>
+                                <h2 class="mt-1 mb-3">{{ $sumGross }} zł</h2>
                             </div>
                         </div>
                     </div>

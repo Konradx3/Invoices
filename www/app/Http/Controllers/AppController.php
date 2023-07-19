@@ -13,7 +13,17 @@ class AppController extends Controller
 
     public function index()
     {
-        return view('app.components.dashboard');
+        $countInvoiceCurrentMonth = Invoice::getCountInvoicesCurrentMonth();
+        $count = $countInvoiceCurrentMonth[0]->count;
+
+        $invoicesInProgress = Invoice::findInvoicesInProgress();
+
+        $sumNetAmountCurrentMonth = Item::getSumNetAmountCurrentMonth();
+        $sumNet = $sumNetAmountCurrentMonth[0]->sumNetAmount;
+
+        $sumGrossAmountCurrentMonth = Item::getSumGrossAmountCurrentMonth();
+        $sumGross = $sumGrossAmountCurrentMonth[0]->sumGrossAmount;
+        return view('app.components.dashboard', ['count' => $count, 'sumNet' => $sumNet, 'sumGross' => $sumGross, 'invoicesInProgress' => $invoicesInProgress]);
     }
 
     public function list()

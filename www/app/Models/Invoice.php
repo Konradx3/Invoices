@@ -45,4 +45,15 @@ class Invoice extends Model
     {
         return DB::table('invoices')->get();
     }
+
+    public static function getCountInvoicesCurrentMonth(): array
+    {
+        return DB::select("SELECT COUNT(*) AS count FROM invoices WHERE YEAR(created_at) = YEAR(CURRENT_TIMESTAMP) AND MONTH(created_at) = MONTH(CURRENT_TIMESTAMP)");
+    }
+
+    public static function findInvoicesInProgress()
+    {
+        return DB::table('invoices')->where('status', 'in-progress')->count();
+    }
+
 }
