@@ -15,4 +15,15 @@ class ExampleTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    public function test_first_test()
+    {
+        $a = 1;
+        $b = 2;
+
+        $c = $a + $b;
+
+//        $this->assertSame('3', $c);
+        $this->assertSame(3, $c);
+    }
 }
