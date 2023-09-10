@@ -23,7 +23,12 @@ class AppController extends Controller
 
         $sumGrossAmountCurrentMonth = Item::getSumGrossAmountCurrentMonth();
         $sumGross = $sumGrossAmountCurrentMonth[0]->sumGrossAmount;
-        return view('app.components.dashboard', ['count' => $count, 'sumNet' => $sumNet, 'sumGross' => $sumGross, 'invoicesInProgress' => $invoicesInProgress]);
+        return view('app.components.dashboard', [
+            'count' => $count,
+            'sumNet' => $sumNet,
+            'sumGross' => $sumGross,
+            'invoicesInProgress' => $invoicesInProgress
+        ]);
     }
 
     public function list()
@@ -36,6 +41,47 @@ class AppController extends Controller
     public function new()
     {
         return view('app.components.new_invoice');
+    }
+
+    public function show(Invoice $invoiceId)
+    {
+        $invoice = Invoice::getInvoiceDataById($invoiceId->id);
+        $items = Item::getItemsByInvoiceId($invoiceId->id);
+
+        switch($invoice[0]->payment_method)
+        {
+            case 'transfer7':
+                $invoice[0]->payment_method = 'Przelew 7 dni';
+                break;
+            case 'transfer14':
+                $invoice[0]->payment_method = 'Przelew 14 dni';
+                break;
+            default:
+                $invoice[0]->payment_method = 'Gotówka';
+        }
+
+        $amountGross = 0;
+        $amountVat = 0;
+
+        foreach ($items as $item)
+        {
+            $amountGross += $item->gross_amount;
+            $amountVat += $item->gross_amount - $item->net_amount;
+        }
+
+        $amountDue = $amountGross - $invoice[0]->paid;
+
+        $balance = [
+            'amountGross' => $amountGross,
+            'amountVat' => $amountVat,
+            'amountDue' => $amountDue,
+        ];
+
+        return view('app.components.show', [
+            'invoice' => $invoice[0],
+            'items' => $items,
+            'balance' => $balance
+        ]);
     }
 
     public function store(StoreAppRequest $request)
@@ -96,7 +142,7 @@ class AppController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('app.new')->with('successStore', 'Dane zostały zapisane.');
+            return redirect()->route('app.new')->with('successStore', 'Faktura została wygenerowana.');
         }
         catch (\Exception $e)
         {

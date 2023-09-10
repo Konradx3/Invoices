@@ -29,12 +29,12 @@
                                 <td class="d-none d-md-table-cell">
                                     <div class="btn-group">
                                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Small button
+                                            Więcej
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('app.show', ['invoiceId' => $invoice->id]) }}">Szczegóły</a></li>
+                                            <li><a class="dropdown-item" href="#">Pobierz PDF</a></li>
+                                            <li><a class="dropdown-item" href="#">Oznacz jako opłacone</a></li>
                                         </ul>
                                     </div>
                                 </td>

@@ -14,7 +14,7 @@
             </li>
 
             <li class="sidebar-item {{ Route::is('app.list') ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ route('app.list') }}">
+                <a class="sidebar-link" href="{{ route('app.invoices') }}">
                     <i class="align-middle" data-feather="list"></i> <span class="align-middle">Lista faktur</span>
                 </a>
             </li>

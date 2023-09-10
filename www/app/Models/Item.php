@@ -26,4 +26,9 @@ class Item extends Model
     {
         return DB::select("SELECT SUM(gross_amount) AS sumGrossAmount FROM items_for_invoice WHERE YEAR(created_at) = YEAR(CURRENT_TIMESTAMP) AND MONTH(created_at) = MONTH(CURRENT_TIMESTAMP)");
     }
+
+    public static function getItemsByInvoiceId(int $invoiceId)
+    {
+        return DB::table('items_for_invoice')->where('invoice_id', $invoiceId)->get();
+    }
 }

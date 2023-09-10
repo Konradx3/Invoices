@@ -25,7 +25,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('/app')->group(function (){
     Route::get('/', [AppController::class, 'index'])->name('app.index');
-    Route::get('/list', [AppController::class, 'list'])->name('app.list');
+    Route::get('/invoices', [AppController::class, 'list'])->name('app.invoices');
+    Route::get('/invoices/{invoiceId}', [AppController::class, 'show'])->name('app.show');
     Route::get('/new', [AppController::class, 'new'])->name('app.new');
     Route::post('/store', [AppController::class, 'store'])->name('app.store');
 
