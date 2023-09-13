@@ -27,6 +27,7 @@ Route::prefix('/app')->group(function (){
     Route::get('/', [AppController::class, 'index'])->name('app.index');
     Route::get('/invoices', [AppController::class, 'list'])->name('app.invoices');
     Route::get('/invoices/{invoiceId}', [AppController::class, 'show'])->name('app.show');
+    Route::get('/download', [\App\Http\Controllers\PDFController::class, 'generatePDF'])->name('app.download');
     Route::get('/new', [AppController::class, 'new'])->name('app.new');
     Route::post('/store', [AppController::class, 'store'])->name('app.store');
 

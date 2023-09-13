@@ -33,7 +33,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" href="{{ route('app.show', ['invoiceId' => $invoice->id]) }}">Szczegóły</a></li>
-                                            <li><a class="dropdown-item" href="#">Pobierz PDF</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('app.download') }}">Pobierz PDF</a></li>
                                             <li><a class="dropdown-item" href="#">Oznacz jako opłacone</a></li>
                                         </ul>
                                     </div>

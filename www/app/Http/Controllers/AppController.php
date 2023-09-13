@@ -72,9 +72,9 @@ class AppController extends Controller
         $amountDue = $amountGross - $invoice[0]->paid;
 
         $balance = [
-            'amountGross' => $amountGross,
-            'amountVat' => $amountVat,
-            'amountDue' => $amountDue,
+            'amountGross' => number_format($amountGross, 2),
+            'amountVat' => number_format($amountVat, 2),
+            'amountDue' => number_format($amountDue, 2),
         ];
 
         return view('app.components.show', [
@@ -122,7 +122,7 @@ class AppController extends Controller
             $invoice->address = $request->input('address');
             $invoice->zip_code = $request->input('zipCode');
             $invoice->payment_method = $request->input('paymentMethod');
-            $invoice->paid = $request->input('paid');
+            $invoice->paid = number_format($request->input('paid'), 2);
             $invoice->status = 'in-progress';
             $invoice->save();
 
